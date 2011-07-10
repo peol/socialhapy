@@ -16,3 +16,6 @@
 [submodule "vendor/cookie"]
 	path = vendor/cookie
 	url = https://github.com/jed/cookie-node.git
+[submodule "vendor/Humane-Dates"]
+	path = vendor/Humane-Dates
+	url = git@github.com:peol/Humane-Dates.git
