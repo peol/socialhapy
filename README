@@ -3,6 +3,6 @@ socialhapy, the social developer irc bot.
 This project is VERY hacky and the architecture is horrible due to the fact that this was a learn-to-play with node.js hands-on. There are a few things you need to know:
 
 * It's very tightly coupled between modules
-* Huge amounts of refactoring, both on code level and architectural level
+* Huge amounts of refactoring, both on code level and architectural level is needed
 * The credentials needed for the different modules is pretty spread out, you
   need to find them (bitly is in socialhapy.js, twitter in modules/twitter.js, etc)
