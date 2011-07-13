@@ -154,7 +154,10 @@
 
 		// Grab the latest tweet from a user
 		api.jerk.watch_for(/^\.tweet (.+?)$/i, function(message) {
-			getLatestTweet( api, [ message.source ], message.match_data[ 1 ] );
+		    var target = message.match_data[ 1 ],
+		        fn = target.match(/^\d+$/) ? getTweet : getLatestTweet;
+
+			fn( api, [ message.source ], message.match_data[ 1 ] );
 		});
 
 		// Capture specific tweet links, and output them
