@@ -49,6 +49,19 @@ function checkAvailability(availability) {
         ' [N/A in ' + a.join(', ') + ']':
         '';
 }
+function createPopularity(index) {
+    var str = '',
+        i = 0 ,
+        l = 10;
+
+    index = Math.round( parseFloat(index) * 10 );
+
+    for (; i < l; i += 1) {
+        str += i < index ? '❚' : '❘';
+    }
+
+    return str;
+};
 
 function createBitlyURL(api, type, id, cb) {
     var spotifyURL = 'http://open.spotify.com/' + type + '/' + id;
@@ -99,10 +112,12 @@ function respond(api, message) {
         id = message.match_data[ 2 ];
 
     lookUp(type, id, function(data) {
-        var msg = '';
+        var msg = '',
+            popularity = '';
         
         if ( data.info ) {
             msg = ' ' + formatting[ data.info.type ]( data );
+            popularity = data[ type ].popularity && ' Popularity: ' + createPopularity( data[ type ].popularity ) || '';
         }
         else {
             msg = 'Invalid Spotify URL (nothing found)';
@@ -110,7 +125,7 @@ function respond(api, message) {
         }
 
         createBitlyURL(api, type, id, function(bitlyURL) {
-            api.jerk.say(message.source, bitlyURL + msg);
+            api.jerk.say(message.source, bitlyURL + msg + popularity);
         });
     });
 };
