@@ -13,7 +13,7 @@ var formatting = {
                 ' (' + data.track.album.released + ')' :
                 '';
 
-        suffix += checkAvailability( data.track.availability );
+        suffix += this._availability( checkAvailability( data.track.availability ) );
 
         return '[Track] ' + artist + ' - ' + song + suffix;
     },
@@ -22,7 +22,7 @@ var formatting = {
         var artist = data.album.artist,
             album = data.album.name,
             released = data.album.released,
-            suffix = checkAvailability( data.album.availability );
+            suffix = this._availability( checkAvailability( data.album.availability ) );
 
         return '[Album] ' + artist + ' - ' + album + ' (' + released + ')' + suffix;
     },
@@ -32,13 +32,19 @@ var formatting = {
             noOfAlbums = data.artist.albums.length;
 
         return '[Artist] ' + artist + ', featured on ' + noOfAlbums + ' albums';
-    }
+    },
+
+    _availability: function(notAvailableIn) {
+         return notAvailableIn.length ?
+            ' [N/A in ' + notAvailableIn.join(', ') + ']':
+            '';
+    }       
 };
 
 // Compare the availability data with our local data and return
-// a string that describes which countries that this track, artist,
-// or album is unavailable in. If it's available in all, it'll return
-// and empty string
+// an array that describes which countries that this track, artist,
+// or album is unavailable in. It'll return an empty array if the
+// availability string was empty, even if there (obviously) was matches.
 function checkAvailability(availability) {
     var i, l = availTargets.length, a = [], ret = '';
 
@@ -50,9 +56,35 @@ function checkAvailability(availability) {
         }
     }
 
-    return a.length ?
-        ' [N/A in ' + a.join(', ') + ']':
-        '';
+    return availability.length ?
+         a:
+        [];
+}
+
+// Searches through the first five tracks and sees if there's anyone better suited
+// availability-wise.
+// Returns an array containing # of skipped tracks and the actual track
+function findCompatibleTrack(tracks) {
+    var i = 0,
+        l = 10,
+        bestMatch = null,
+        tTrack,
+        tAvail;
+
+    for (; i < l; i += 1) {
+        tTrack = tracks[ i ];
+        tAvail = checkAvailability( tTrack.album && tTrack.album.availability );
+
+        if ( !bestMatch || bestMatch[ 0 ] > tAvail.length ) {
+            bestMatch = [ tAvail.length, tTrack ];
+
+            if ( tAvail.length === 0 ) {
+                break;
+            }
+        }
+    }
+
+    return [ i, bestMatch[ 1 ] ];
 }
 
 // Creates a ten-in-length string illustrating how popular this particular track
@@ -127,7 +159,8 @@ function request(path, cb) {
 // querying the spotify API again to get more data on the subject
 function respond(api, message) {
     var type = message.match_data[ 1 ],
-        id = message.match_data[ 2 ];
+        id = message.match_data[ 2 ],
+        skipped = message.match_data[ 3 ];
 
     lookUp(type, id, function(data) {
         var msg = '',
@@ -136,6 +169,10 @@ function respond(api, message) {
         if ( data.info ) {
             msg = ' ' + formatting[ data.info.type ]( data );
             popularity = data[ type ].popularity && ' Popularity: ' + createPopularity( data[ type ].popularity ) || '';
+            // Append the `skipped` stuff here
+            if ( skipped ) {
+                popularity += ' (skipped ' + skipped + ' unavailable tracks)';
+            }
         }
         else {
             msg = 'Invalid Spotify URL (nothing found)';
@@ -160,10 +197,19 @@ exports.invoke = function(api) {
             searchStr = encodeURI( message.match_data[ 2 ] );
 
         search(type, searchStr, function(data) {
-            var d = data[ type + 's' ][ 0 ];
+            var entry,
+                d = data[ type + 's' ][ 0 ];
+
+            if ( type === 'track' ) {
+                entry = findCompatibleTrack( data.tracks );
+                d = entry[ 1 ];
+            }
 
             if ( d ) {
                 message.match_data[ 2 ] = d.href.split(':')[ 2 ];
+                // Fake a fourth match parameter if we're dealing with tracks,
+                // this will be the # of skipped tracks before finding this one
+                message.match_data[ 3 ] = entry && entry[ 0 ];
                 wrap( message );
             }
             else {
