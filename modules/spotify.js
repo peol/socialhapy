@@ -57,7 +57,7 @@ function createPopularity(index) {
     index = Math.round( parseFloat(index) * 10 );
 
     for (; i < l; i += 1) {
-        str += i < index ? '❚' : '❘';
+        str += i < index ? '▮' : '▯';
     }
 
     return str;
