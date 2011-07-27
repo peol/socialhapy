@@ -4,6 +4,7 @@ var targetHost = "ws.spotify.com",
     availTargets = ['SE', 'US'/*, 'AUS', 'CA'*/],
     http = require('http');
 
+// Object containing formatting methods for track, album and artist types
 var formatting = {
     track: function(data) {
         var artist = data.track.artists.map(function(a) { return a.name; }).join(', '),
@@ -34,6 +35,10 @@ var formatting = {
     }
 };
 
+// Compare the availability data with our local data and return
+// a string that describes which countries that this track, artist,
+// or album is unavailable in. If it's available in all, it'll return
+// and empty string
 function checkAvailability(availability) {
     var i, l = availTargets.length, a = [], ret = '';
 
@@ -49,12 +54,17 @@ function checkAvailability(availability) {
         ' [N/A in ' + a.join(', ') + ']':
         '';
 }
+
+// Creates a ten-in-length string illustrating how popular this particular track
+// is (currently, from what I can tell, it'll only work on tracks). The popularity
+// stuff is a little fuzzy, we're not really sure what it means more than it is spanning
+// between 0-1 :-)
 function createPopularity(index) {
     var str = '',
         i = 0 ,
         l = 10;
 
-    index = Math.round( parseFloat(index) * 10 );
+    index = Math.round( parseFloat( index ) * 10 );
 
     for (; i < l; i += 1) {
         str += i < index ? '▮' : '▯';
@@ -63,6 +73,8 @@ function createPopularity(index) {
     return str;
 };
 
+// Creates a custom bit.ly URL by sending in the spotify type and the ID.
+// Invokes the callback with the created URL (or empty string if it fails).
 function createBitlyURL(api, type, id, cb) {
     var spotifyURL = 'http://open.spotify.com/' + type + '/' + id;
 
@@ -71,12 +83,14 @@ function createBitlyURL(api, type, id, cb) {
     });
 }
 
+// Search the spotify library
 function search(type, str, cb) {
     var path = targetSearchPath + type + '.json?q=' + str;
 
     request(path, cb);
 }
 
+// Resolve the spotify type/ID and get the data
 function lookUp(type, id, cb) {
     var path = targetLookupPath + type + ':' + id;
 
@@ -87,6 +101,7 @@ function lookUp(type, id, cb) {
     request(path, cb);
 }
 
+// Does a request to the spotify web service API
 function request(path, cb) {
     var chunks = "",
         server = http.createClient(80, targetHost),
@@ -107,6 +122,9 @@ function request(path, cb) {
     });
 }
 
+// Respond to spotify URL/URI links.
+// This is also used indirectly by the .spotifind functionality,
+// querying the spotify API again to get more data on the subject
 function respond(api, message) {
     var type = message.match_data[ 1 ],
         id = message.match_data[ 2 ];
