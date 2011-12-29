@@ -6,13 +6,7 @@
     // make sure your credentials are OK in socialhapy.js 
     
 	// Add paths for the node-twitter-required modules
-	require.paths.unshift(
-		// cookie-node
-		__dirname + "/../vendor/",
-		
-		// node-oauth
-		__dirname + "/../vendor/node-oauth/lib/"
-	);
+	var path = require('path');
 
 	var Twitter = require('./../vendor/node-twitter/lib/twitter'),
 		util = require('util'),
