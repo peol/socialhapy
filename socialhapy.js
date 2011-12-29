@@ -73,7 +73,9 @@ var m,
         modules: {
             twitter: require('./modules/twitter'),
             github: require('./modules/github'),
-            spotify: require('./modules/spotify')
+            spotify: require('./modules/spotify'),
+            vimeo: require('./modules/vimeo'),
+            youtube: require('./modules/youtube')
         }
     };
 
