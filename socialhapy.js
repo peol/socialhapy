@@ -11,7 +11,7 @@ var Jerk = require('Jerk'),
 
 function loadModules() {
     var modules = config.modules,
-        o, m, module;
+        m, module;
 
     function warn(name, str) {
         console.log( functions.format('*** Warning: The `{0}` module was not loaded, {1}', name, str) );
@@ -34,7 +34,7 @@ function loadModules() {
             module.register( socialhapy );
         }
         else {
-            warn(o, 'missing `invoke` function');
+            warn(o, 'missing `register` function');
         }
     }
 }
@@ -59,7 +59,14 @@ function initialize() {
     config.irc.channels = functions.unique( ircChans );
 
     // Connect to IRC
-    socialhapy.jerk = jerkInstance = Jerk().connect( config.irc );     
+    Jerk(function(jerk) {
+        var o;
+        socialhapy.jerk = jerkInstance = jerk; 
+
+        for (o in watchers) {
+            functions.addWatcher( jerkInstance, watchers[ o ] );
+        }
+    }).connect( config.irc );
 
     for (o in watchers) {
         functions.addWatcher( jerkInstance, watchers[ o ] );
