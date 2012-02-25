@@ -1,0 +1,15 @@
+[submodule "node_modules/Jerk"]
+	path = node_modules/Jerk
+	url = git://github.com/gf3/Jerk.git
+[submodule "node_modules/node-bitly"]
+	path = node_modules/node-bitly
+	url = git://github.com/tanepiper/node-bitly.git
+[submodule "node_modules/node-github"]
+	path = node_modules/node-github
+	url = git://github.com/ajaxorg/node-github.git
+[submodule "node_modules/node-spotify"]
+	path = node_modules/node-spotify
+	url = git://github.com/peol/node-spotify.git
+[submodule "node_modules/ntwitter"]
+	path = node_modules/ntwitter
+	url = git://github.com/AvianFlu/ntwitter.git

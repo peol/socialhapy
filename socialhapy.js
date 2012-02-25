@@ -59,13 +59,18 @@ function initialize() {
     config.irc.channels = functions.unique( ircChans );
 
     // Connect to IRC
-    Jerk(function(jerk) {
-        socialhapy.jerk = jerkInstance = jerk; 
+    (function() {
+        var staticJerk = Jerk(function(jerk) {
+            socialhapy.jerk = jerkInstance = jerk; 
 
-        for (o in watchers) {
-         	functions.addWatcher( jerkInstance, watchers[ o ] );
-        }
-    }).connect( config.irc );
+            for (o in watchers) {
+             	functions.addWatcher( jerkInstance, watchers[ o ] );
+            }
+        })
+        .connect( config.irc );
+
+        jerkInstance.say = staticJerk.say;
+    })();
 }
 
 initialize();

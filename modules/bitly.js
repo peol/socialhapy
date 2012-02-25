@@ -1,5 +1,5 @@
 var functions = require('../functions'),
-    Bitly = require('node-bitly').Bitly,
+    Bitly = require('node-bitly'),
     urlp = require('url'),
     hollabacks,
     bitly;
@@ -31,15 +31,13 @@ bitly = module.exports = {
         this._sh = socialhapy;
 
         var credentials = socialhapy.config.modules.bitly;
-
         this._bitly = new Bitly(credentials.user, credentials.token);
-
         functions.extend(socialhapy.watchers, this.watchers);
     },
 
     createLink: function(url, hollaback) {
-        this._bitly.shorten(url, function(result) {
-            if ( !result.data.url ) {
+        this._bitly.shorten(url, function(err, result) {
+            if ( err || !result.data.url ) {
                 console.log('*** Warning: bit.ly module encountered an error while shortening a link: ' + result.status_txt);
             }
 
