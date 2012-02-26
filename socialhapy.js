@@ -69,7 +69,7 @@ function initialize() {
         })
         .connect( config.irc );
 
-        jerkInstance.say = staticJerk.say;
+        functions.extend(jerkInstance, staticJerk);
     })();
 }
 

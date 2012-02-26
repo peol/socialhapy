@@ -1,6 +1,6 @@
 [submodule "node_modules/Jerk"]
 	path = node_modules/Jerk
-	url = git://github.com/gf3/Jerk.git
+	url = git://github.com/peol/Jerk.git
 [submodule "node_modules/node-bitly"]
 	path = node_modules/node-bitly
 	url = git://github.com/tanepiper/node-bitly.git

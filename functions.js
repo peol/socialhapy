@@ -126,7 +126,6 @@ module.exports = functions = {
 
     // Checks whether a specific user is an admin or not
     isAdmin: function(user) {
-return false;
         var adminUser = config.admins[ user.nick ],
             userMatch = adminUser && this.isMatchOrEmpty( adminUser.user, user.user ),
             hostMatch = adminUser && this.isMatchOrEmpty( adminUser.host, user.host );
@@ -153,7 +152,7 @@ return false;
     addWatcher: function(jerk, w) {
         jerk.watch_for(w.pattern, function(m) {
             var that = this,
-                isAdmin = functions.isAdmin( m.userData );
+                isAdmin = functions.isAdmin( m.person );
 
             if ( w.adminOnly && !isAdmin ) {
                 m.say(m.user + ': Sorry, admins only');

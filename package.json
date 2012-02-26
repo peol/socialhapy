@@ -12,7 +12,7 @@
 		"url" : "http://github.com/peol/socialhapy.git"
 	},
 	"dependencies": {
-		"jerk": "1.1.x",
+		"jerk": "git://github.com/peol/Jerk.git#master",
 		"bitly": "1.2.x",
 		"github": "0.0.x",
 		"spotify": "0.1.x",
