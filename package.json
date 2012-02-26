@@ -1,0 +1,25 @@
+{
+	"name": "socialhapy",
+	"description": "A social developer bot, helps by grabbing information from tweets, github commits etc.",
+	"author": "Andrée Hansson <peolanha@gmail.com>",
+	"contributors": [],
+	"homepage": "https://github.com/peol/socialhapy",
+	"version": "2.0.0",
+	"main": "socialhapy",
+	"engines": [ "node >=0.6.0" ],
+	"repository": {
+		"type" : "git",
+		"url" : "http://github.com/peol/socialhapy.git"
+	},
+	"dependencies": {
+		"jerk": "1.1.x",
+		"bitly": "1.2.x",
+		"github": "0.0.x",
+		"spotify": "0.1.x",
+		"ntwitter": "0.2.x"
+	},
+	"license": {
+		"type": "MIT",
+		"url": "http://www.opensource.org/licenses/mit-license.php"
+	}
+}
