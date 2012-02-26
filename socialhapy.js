@@ -1,4 +1,4 @@
-var Jerk = require('Jerk'),
+var Jerk = require('jerk'),
     config = require('./config'),
     functions = require('./functions'),
     jerkInstance = null,
