@@ -8,14 +8,12 @@ URIs and lets everyone know what artist, track or album that was linked.
 
 How to get started
 ------------------
-This project expects version 0.6.0+ of node.js, but it'll probably work
+This project expects version 0.6.0+ of node.js, but it'll probably
 work with lower versions if you fix the `node_modules` reference.
 
-1. Go into your Terminal application and do
-   `git clone git@github.com:peol/socialhapy.git`
-2. `cd socialhapy` and then initialize the required submodules needed by
-   running `git submodule init` and `git submodule update --recursive`
-3. Edit the `socialhapy/config.example.js` file to your liking, and **save it as `config.js`**
+1. Go into your Terminal application and do `git clone git@github.com:peol/socialhapy.git`
+2. `cd socialhapy` and run `npm install` to pull in all dependencies
+3. Edit the `config.example.js` file to your liking, and **save it as `config.js`**
 4. Run socialhapy by either running it with `node socialhapy.js` or by
    the recommended way, with `forever`
 
