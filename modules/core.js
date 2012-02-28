@@ -24,6 +24,28 @@ watchers = {
         }
     },
 
+    // .broadcast [channel] <message>
+    // sends a message to all channels (if not defined)
+    broadcast: {
+        adminOnly: true,
+        pattern: /^\.broadcast (.+)$/,
+        hollaback: function(m) {
+            var channels = core._sh.config.irc.channels,
+                msg = m.match_data[ 1 ];
+
+            if ( msg.indexOf('#') === 0 ) {
+                msg = msg.split( ' ' );
+                channels = [ msg.shift() ];
+                msg = msg.join( ' ' );
+            }
+
+            channels.forEach(function(channel) {
+                core._sh.jerk.say( channel, msg );
+            });
+        }
+    },
+
+
     // Add an idle channel temporary (handy when you want it to idle in a new
     // channel, but don't want to restart the bot - YOU DO NEED TO ADD THAT CHANNEL
     // MANUALLY IN THE CONFIG)
