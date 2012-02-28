@@ -1,5 +1,5 @@
 var functions = require('../functions'),
-    Github = require('node-github').GitHubApi,
+    Github = require('github').GitHubApi,
     hollabacks,
     github;
 

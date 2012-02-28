@@ -1,6 +1,6 @@
 var functions = require('../functions'),
     urlShortener = require('./bitly'),
-    spotifyAPI = require('node-spotify'),
+    spotifyAPI = require('spotify'),
     hollabacks,
     parsers,
     helpers,

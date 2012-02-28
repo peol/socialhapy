@@ -1,5 +1,5 @@
 var functions = require('../functions'),
-    Bitly = require('node-bitly'),
+    Bitly = require('bitly'),
     urlp = require('url'),
     hollabacks,
     bitly;
