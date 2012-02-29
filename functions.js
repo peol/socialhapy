@@ -113,7 +113,7 @@ module.exports = functions = {
     // Normalize a string for IRC output (remove unnecessary white space, new
     // lines etc.)
     normalize: function(str) {
-        return str.replace(/\r\n|\n/g, '');
+        return str.replace(/\r\n|\n/g, ' ');
     },
 
     // Helper for checking if `v1` has a value, and if the value is identical

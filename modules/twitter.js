@@ -132,7 +132,7 @@ twitter = module.exports = {
         if ( includeURL ) {
             urlShortener.createLink(functions.format('https://twitter.com/{0}/status/{1}', screenName, id), function(url) {
                 tmpl += ' ' + twitter._sh.config.prefix + url;
-                hollaback( tmpl );
+                hollaback( functions.normalize(tmpl) );
             });
         }
         else {
