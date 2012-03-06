@@ -15,7 +15,7 @@
 		"jerk": "git://github.com/peol/Jerk.git#master",
 		"bitly": "1.2.x",
 		"github": "0.0.x",
-		"spotify": "0.1.x",
+		"spotify": "0.2.x",
 		"ntwitter": "0.2.x"
 	},
 	"license": {
