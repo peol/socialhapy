@@ -19,7 +19,7 @@ hollabacks = {
 
             if ( err ) {
                 console.log( err );
-                str = 'An internal error while fetching Spotify data occurred';
+                str = 'An internal error occurred while fetching Spotify data';
             }
             else {
                 data = parsers.data(type, data);

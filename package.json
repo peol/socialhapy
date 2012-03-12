@@ -16,7 +16,8 @@
 		"bitly": "1.2.x",
 		"github": "0.0.x",
 		"spotify": "0.2.x",
-		"ntwitter": "0.2.x"
+		"ntwitter": "0.2.x",
+		"uglify-js": "1.2.x"
 	},
 	"license": {
 		"type": "MIT",
