@@ -56,7 +56,7 @@ hollabacks = {
 
             issue = issue.issue;
 
-            var fStr = 'Issue #{0} on \002{1}\002, reported by {2} ({3}): {4}',
+            var fStr = 'Issue #{0} on \002{1}\002 ({2}; {3}): {4}',
                 duration = functions.duration((+new Date() - +new Date( issue.created_at)) / 1000, true, true);
 
             m.say( functions.format(true, fStr, issue.number, matches[ 2 ], issue.user, duration, issue.title) );
