@@ -12,11 +12,11 @@ hollabacks = {
 
         twitter[ method ](target, function(err, data) {
             if ( err || !data ) {
-                if ( err.statusCode === 401 ) {
+                if ( err && err.statusCode === 401 ) {
                     // 401's are protected tweets 99/100 times
                     m.say( functions.format(true, '\002{0}\002 has protected tweets', target) );
                 }
-                else if ( err.statusCode === 404 ) {
+                else if ( err && err.statusCode === 404 ) {
                     // 404's are twitter status errors (protected or non-existing)
                     m.say( functions.format(true, "Could not find the tweet with id \002{0}\002", target) );
                 }
@@ -141,7 +141,7 @@ twitter = module.exports = {
     },
 
     getLatestTweet: function(user, hollaback) {
-        this._twitter.get('/statuses/user_timeline.json', { count: 1, screen_name: user, include_entities: true }, function(err, data) {
+        this._twitter.get('/statuses/user_timeline.json', { count: 10, screen_name: user, include_entities: true }, function(err, data) {
             hollaback(err, data && data[ 0 ]);
         });
     },
