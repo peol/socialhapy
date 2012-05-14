@@ -16,7 +16,7 @@ hollabacks = {
                     var json = JSON.parse( data );
 
                     if ( json ) {
-                        m.say( functions.format("Photo by/of \002{0}\002, {1}", json.name, json.link) );
+                        m.say( functions.format(true, "Photo by/of \002{0}\002, {1}", json.name, json.link) );
                     }
                 });
             });
