@@ -73,6 +73,10 @@ module.exports = {
         spotify: {
             enabled: true,
             compatible: []
+        },
+
+        facebook: {
+            enabled: true
         }
     },
 
