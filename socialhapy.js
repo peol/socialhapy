@@ -43,7 +43,7 @@ function initialize() {
     var chans = config.channels,
         ircChans = [],
         o;
-        
+
     loadModules();
 
     if ( config.debugMode ) {
@@ -53,7 +53,7 @@ function initialize() {
 
     // Prepare channel array
     for (o in chans) {
-         ircChans = ircChans.concat( chans[ o ] );   
+         ircChans = ircChans.concat( chans[ o ] );
     }
 
     config.irc.channels = functions.unique( ircChans );
@@ -61,7 +61,7 @@ function initialize() {
     // Connect to IRC
     (function() {
         var staticJerk = Jerk(function(jerk) {
-            socialhapy.jerk = jerkInstance = jerk; 
+            socialhapy.jerk = jerkInstance = jerk;
 
             for (o in watchers) {
              	functions.addWatcher( jerkInstance, watchers[ o ] );

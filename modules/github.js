@@ -15,7 +15,7 @@ hollabacks = {
 
             commit = commit.commit;
 
-            var fStr = 'Commit on \002{0}\002 by {1} ({2}): {3}',
+            var fStr = 'Commit on \x02{0}\x02 by {1} ({2}): {3}',
                 duration = functions.duration(( +new Date() / 1000 ) - ( +new Date( commit.committed_date ) / 1000 ), true, true),
                 normalizedMessage = functions.normalize( commit.message );
 
@@ -34,13 +34,13 @@ hollabacks = {
 
             pullReq = pullReq.pull;
 
-            var fStr = 'Pull request on \002{0}\002 by {1} ({2}): {3}',
+            var fStr = 'Pull request on \x02{0}\x02 by {1} ({2}): {3}',
                 duration = functions.duration((+new Date() - +new Date( pullReq.created_at)) / 1000, true, true);
-            
+
             m.say( functions.format(true, fStr, matches[ 2 ], pullReq.user.login, duration, pullReq.title) );
-     
+
 // With #:
-//            var fStr = 'Pull request #{0} on \002{1}\002 by {2}: {3}';
+//            var fStr = 'Pull request #{0} on \x02{1}\x02 by {2}: {3}';
 //            m.say( functions.format(true, fStr, pullReq.number, matches[ 2 ], pullReq.user.login, pullReq.title) );
         });
     },
@@ -56,7 +56,7 @@ hollabacks = {
 
             issue = issue.issue;
 
-            var fStr = 'Issue #{0} on \002{1}\002 ({2}; {3}): {4}',
+            var fStr = 'Issue #{0} on \x02{1}\x02 ({2}; {3}): {4}',
                 duration = functions.duration((+new Date() - +new Date( issue.created_at)) / 1000, true, true);
 
             m.say( functions.format(true, fStr, issue.number, matches[ 2 ], issue.user, duration, issue.title) );
@@ -76,7 +76,7 @@ github = module.exports = {
     },
 
     handleError: function(err, m) {
-        var tmpl = '\002Github API:\002 {0}',
+        var tmpl = '\x02Github API:\x02 {0}',
             errStr = 'internal error';
 
         if ( typeof err === 'string' ) {

@@ -9,7 +9,7 @@
 	        callback( [] );
 	        return;
 	    }
-	    
+
 		var chunks = "",
 		    server = http.createClient(80, 'www.' + targetHost),
 		    request = server.request('GET', targetPath, { 'host': targetHost });
