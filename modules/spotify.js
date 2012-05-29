@@ -57,10 +57,10 @@ parsers = {
     track: function(track, notAvailableIn, skippedTracks) {
         var artists = track.artists.map(function(a) { return a.name; }).join(', '),
             popularity = helpers.generatePopularity( track.popularity ),
-            tmpl = '\002{0} - {1}\002 (Popularity: {2}';
+            tmpl = '\x02{0} - {1}\x02 (Popularity: {2}';
 
         if ( notAvailableIn.length ) {
-            tmpl += functions.format(', N/A in \002{0}\002', notAvailableIn.join(', '));
+            tmpl += functions.format(', N/A in \x02{0}\x02', notAvailableIn.join(', '));
         }
 
         if ( skippedTracks ) {
@@ -73,14 +73,14 @@ parsers = {
     album: function(album, notAvailableIn, skippedAlbums) {
         var artists = album.artist || album.artists.map(function(a) { return a.name; }).join(', '),
             popularity = helpers.generatePopularity( album.popularity ),
-            tmpl = '\002{0} - {1}\002 (Popularity: {2}';
+            tmpl = '\x02{0} - {1}\x02 (Popularity: {2}';
 
 	if ( album.released ) {
 	    tmpl += functions.format(', released in {0}', album.released);
 	}
 
         if ( notAvailableIn.length ) {
-            tmpl += functions.format(', N/A in \002{0}\002', notAvailableIn.join(', '));
+            tmpl += functions.format(', N/A in \x02{0}\x02', notAvailableIn.join(', '));
         }
 
         if ( skippedAlbums ) {
@@ -94,7 +94,7 @@ parsers = {
         var popularity = helpers.generatePopularity( artist.popularity ),
             tmplAlbums = functions.format(', has {1} album(s) available in the Spotify library', artist.albums),
             tmplPopularity = ' (Popularity: {2})',
-            tmpl = '\002{0}\002';
+            tmpl = '\x02{0}\x02';
 
         if ( artist.albums ) {
             tmpl += tmplAlbums;
@@ -189,7 +189,7 @@ helpers = {
     }
 };
 
-spotify = module.exports = { 
+spotify = module.exports = {
     register: function(socialhapy) {
         functions.extend(this, {
             _isloaded: true,
@@ -210,13 +210,13 @@ spotify = module.exports = {
         // URI links
         uri: {
             pattern: /spotify:(track|artist|album):([a-zA-Z0-9]+)/i,
-            hollaback: hollabacks.def 
+            hollaback: hollabacks.def
         },
- 
+
         // URL links
         url: {
             pattern: /open\.spotify\.com\/(track|artist|album)\/([a-zA-Z0-9]+)/i,
-            hollaback: hollabacks.def 
+            hollaback: hollabacks.def
         }
     }
 };

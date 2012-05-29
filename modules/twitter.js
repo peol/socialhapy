@@ -14,11 +14,11 @@ hollabacks = {
             if ( err || !data ) {
                 if ( err && err.statusCode === 401 ) {
                     // 401's are protected tweets 99/100 times
-                    m.say( functions.format(true, '\002{0}\002 has protected tweets', target) );
+                    m.say( functions.format(true, '\x02{0}\x02 has protected tweets', target) );
                 }
                 else if ( err && err.statusCode === 404 ) {
                     // 404's are twitter status errors (protected or non-existing)
-                    m.say( functions.format(true, "Could not find the tweet with id \002{0}\002", target) );
+                    m.say( functions.format(true, "Could not find the tweet with id \x02{0}\x02", target) );
                 }
                 else if ( !data ) {
                     // User was not found
@@ -76,7 +76,7 @@ stream = {
         }
 
         var user = data.user.screen_name,
-            o,       
+            o,
             channels = twitter.config.streamChannels,
             chan;
 
@@ -123,11 +123,11 @@ twitter = module.exports = {
 
         stream.start();
 
-        functions.extend(socialhapy.watchers, this.watchers); 
+        functions.extend(socialhapy.watchers, this.watchers);
     },
 
     createTweet: function(includeURL, screenName, message, id, hollaback) {
-        var tmpl = functions.format(true, 'Tweet from \002{0}\002: {1}', screenName, message);
+        var tmpl = functions.format(true, 'Tweet from \x02{0}\x02: {1}', screenName, message);
 
         if ( includeURL ) {
             urlShortener.createLink(functions.format('https://twitter.com/{0}/status/{1}', screenName, id), function(url) {

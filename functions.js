@@ -13,7 +13,7 @@ module.exports = functions = {
             str = config.prefix + args.shift();
         }
 
-        return str.replace(/{(\d+)}/g, function(match, number) { 
+        return str.replace(/{(\d+)}/g, function(match, number) {
             return typeof args[ number ] != 'undefined' ?
                 args[ number ] :
                 '{' + number + '}';
@@ -31,7 +31,7 @@ module.exports = functions = {
         function subtract(div) {
             var v = Math.floor( seconds / div );
             seconds %= div;
-        
+
             return v;
         }
 
@@ -48,7 +48,7 @@ module.exports = functions = {
             l = val.length,
             v;
 
-        for (; i < l; i += 1) {        
+        for (; i < l; i += 1) {
             v = val [ i ];
 
             if ( opts.compress ) {
@@ -68,13 +68,13 @@ module.exports = functions = {
                 return i[ 0 ] > 0;
             });
         }
-        
+
         if ( !opts.asArray ) {
             val = val
                 .map(function(i){return i.join('');})
                 .join(', ');
         }
-        
+
         return opts.compress && !opts.asArray ?
             val.replace(/,/g,''):
             val;
@@ -130,7 +130,7 @@ module.exports = functions = {
             userMatch = adminUser && this.isMatchOrEmpty( adminUser.user, user.user ),
             hostMatch = adminUser && this.isMatchOrEmpty( adminUser.host, user.host );
 
-        return userMatch && hostMatch; 
+        return userMatch && hostMatch;
     },
 
     // Filters an array and returns a new array with unique values

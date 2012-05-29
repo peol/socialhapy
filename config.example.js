@@ -60,7 +60,7 @@ module.exports = {
             // Define stream output. THE CHANNELS NEEDS TO BE ADDED IN `channels` above
             // Syntax: "#channel": [] (will output everything) or ['twitterer1', 'twitterer2']
             // The bot will not output streaming tweets to the normal channel list, if you want
-            // it to stream to your channel, you NEED to add it to this object 
+            // it to stream to your channel, you NEED to add it to this object
             // TODO: Add these channels dynamically in `register` in `modules/twitter.js`
             streamChannels: {
             }
