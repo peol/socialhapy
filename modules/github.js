@@ -1,5 +1,5 @@
 var functions = require('../functions'),
-    Github = require('github').GitHubApi,
+    Github = require('github'),
     hollabacks,
     github;
 
@@ -7,8 +7,8 @@ hollabacks = {
     commitLink: function(m) {
         var matches = m.match_data;
 
-        github.getCommit(matches[ 1 ], matches[ 2 ], matches[ 3 ], function(commit) {
-            if ( !commit ) {
+        github.getCommit(matches[ 1 ], matches[ 2 ], matches[ 3 ], function(err, commit) {
+            if ( err ) {
                 github.handleError('no commit found', m);
                 return;
             }
@@ -16,7 +16,7 @@ hollabacks = {
             commit = commit.commit;
 
             var fStr = 'Commit on \002{0}\002 by {1} ({2}): {3}',
-                duration = functions.duration(( +new Date() / 1000 ) - ( +new Date( commit.committed_date ) / 1000 ), true, true),
+                duration = functions.duration(( +new Date() / 1000 ) - ( +new Date( commit.author.date ) / 1000 ), true, true),
                 normalizedMessage = functions.normalize( commit.message );
 
                 m.say( functions.format(true, fStr, matches[ 2 ], commit.committer.login || commit.committer.name, duration, normalizedMessage) );
@@ -26,13 +26,11 @@ hollabacks = {
     pullLink: function(m) {
         var matches = m.match_data;
 
-        github.getPullRequest(matches[ 1 ], matches[ 2 ], matches[ 3 ], function(pullReq) {
-            if ( !pullReq ) {
+        github.getPullRequest(matches[ 1 ], matches[ 2 ], matches[ 3 ], function(err, pullReq) {
+            if ( err ) {
                 github.handleError('no pull request found', m);
                 return;
             }
-
-            pullReq = pullReq.pull;
 
             var fStr = 'Pull request on \002{0}\002 by {1} ({2}): {3}',
                 duration = functions.duration((+new Date() - +new Date( pullReq.created_at)) / 1000, true, true);
@@ -48,8 +46,8 @@ hollabacks = {
     issueLink: function(m) {
         var matches = m.match_data;
 
-        github.getIssue(matches[ 1 ], matches[ 2 ], matches[ 3 ], function(issue) {
-            if ( !issue ) {
+        github.getIssue(matches[ 1 ], matches[ 2 ], matches[ 3 ], function(err, issue) {
+            if ( err ) {
                 github.handleError('no issue found', m);
                 return;
             }
@@ -69,7 +67,9 @@ github = module.exports = {
         functions.extend(this, {
             _isloaded: true,
             _sh: socialhapy,
-            _github: new Github( true )
+            _github: new Github({
+                version: "3.0.0"
+            })
         });
 
         functions.extend(socialhapy.watchers, this.watchers);
@@ -90,28 +90,27 @@ github = module.exports = {
     },
 
     getCommit: function(user, project, commit, hollaback) {
-        var route = functions.format('commits/show/{0}/{1}/{2}', user, project, commit);
-
-        this.request(route, hollaback);
+        this._github.repos.getCommit({
+            user: user,
+            repo: project,
+            sha: commit
+        }, hollaback);
    },
 
     getPullRequest: function(user, project, id, hollaback) {
-        var route = functions.format('pulls/{0}/{1}/{2}', user, project, id);
-
-        this.request(route, hollaback);
+        this._github.pullRequests.get({
+            user: user,
+            repo: project,
+            number: id
+        }, hollaback);
     },
 
     getIssue: function(user, project, issueNo, hollaback) {
-        var route = functions.format('issues/show/{0}/{1}/{2}', user, project, issueNo);
-
-        this.request(route, hollaback);
-    },
-
-    request: function(route, hollaback) {
-        this._github.get(route, null, null, function(err, data) {
-            // TODO: Add error handling
-            hollaback( data );
-        });
+        this._github.issues.getRepoIssue({
+            user: user,
+            repo: project,
+            number: issueNo
+        }, hollaback);
     },
 
     watchers: {
