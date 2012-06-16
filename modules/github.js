@@ -32,7 +32,7 @@ hollabacks = {
                 return;
             }
 
-	    var fStr = 'Pull request on \x02{0}\x02 by {1} ({2}): {3}',
+            var fStr = 'Pull request on \x02{0}\x02 by {1} ({2}): {3}',
                 duration = functions.duration((+new Date() - +new Date( pullReq.created_at)) / 1000, true, true);
 
             m.say( functions.format(true, fStr, matches[ 2 ], pullReq.user.login, duration, pullReq.title) );
@@ -51,13 +51,13 @@ hollabacks = {
                 github.handleError('no issue found', m);
                 return;
             }
-
-            issue = issue.issue;
+console.log(issue);
+            //issue = issue.issue;
 
             var fStr = 'Issue #{0} on \x02{1}\x02 ({2}; {3}): {4}',
                 duration = functions.duration((+new Date() - +new Date( issue.created_at)) / 1000, true, true);
 
-            m.say( functions.format(true, fStr, issue.number, matches[ 2 ], issue.user, duration, issue.title) );
+            m.say( functions.format(true, fStr, issue.number, matches[ 2 ], issue.user.name || issue.user.login, duration, issue.title) );
         });
     }
 };
