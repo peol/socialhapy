@@ -51,8 +51,6 @@ hollabacks = {
                 github.handleError('no issue found', m);
                 return;
             }
-console.log(issue);
-            //issue = issue.issue;
 
             var fStr = 'Issue #{0} on \x02{1}\x02 ({2}; {3}): {4}',
                 duration = functions.duration((+new Date() - +new Date( issue.created_at)) / 1000, true, true);
