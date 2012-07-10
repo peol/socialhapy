@@ -4,8 +4,32 @@ var functions = require('../functions'),
     github;
 
 hollabacks = {
-    commitLink: function(m) {
+    // https://github.com/scottgonzalez/jquery-ui/commit/menu-review
+    commitLinkRef: function(m) {
+        var matches = m.match_data,
+            refName = matches[ 3 ];
+
+        github.getCommitRef(matches[ 1 ], matches[ 2 ], refName, function(err, ref) {
+            var targetCommit = ref && (ref.length ? ref[0] : ref) || null;
+
+            if ( err || !targetCommit ) {
+                github.handleError('no ref/branch found', m);
+                return;
+            }
+
+            m.match_data[ 3 ] = targetCommit.object.sha;
+            hollabacks.commitLink( m, refName );
+        });
+    },
+
+    commitLink: function(m, ref) {
         var matches = m.match_data;
+
+        if ( !/\b([a-f0-9]{40})\b/i.test( matches[ 3 ] ) ) {
+            // didn't match sha1, try resolving through ref instead
+            hollabacks.commitLinkRef( m );
+            return;
+        }
 
         github.getCommit(matches[ 1 ], matches[ 2 ], matches[ 3 ], function(err, commit) {
             if ( err ) {
@@ -19,7 +43,7 @@ hollabacks = {
                 duration = functions.duration(( +new Date() / 1000 ) - ( +new Date( commit.author.date ) / 1000 ), true, true),
                 normalizedMessage = functions.normalize( commit.message );
 
-                m.say( functions.format(true, fStr, matches[ 2 ], commit.committer.login || commit.committer.name, duration, normalizedMessage) );
+                m.say( functions.format(true, fStr, matches[ 2 ] + (ref ? '/' + ref : ''), commit.committer.login || commit.committer.name, duration, normalizedMessage) );
         });
     },
 
@@ -87,6 +111,15 @@ github = module.exports = {
         m.say( functions.format(true, tmpl, errStr) );
     },
 
+    getCommitRef: function(user, project, ref, hollaback) {
+        console.log('gitdata getref:', ref);
+        this._github.gitdata.getReference({
+            user: user,
+            repo: project,
+            ref: 'heads/' + ref
+        }, hollaback);
+    },
+
     getCommit: function(user, project, commit, hollaback) {
         this._github.repos.getCommit({
             user: user,
@@ -114,7 +147,7 @@ github = module.exports = {
     watchers: {
         // Commit links
         commitLink: {
-            pattern: /github\.com\/(.+?)\/(.+?)\/commit\/([a-z0-9]+)/i,
+            pattern: /github\.com\/(.+?)\/(.+?)\/commit\/(\S+)/i,
             hollaback: hollabacks.commitLink
         },
 
