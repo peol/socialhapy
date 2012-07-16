@@ -37,7 +37,7 @@ fb = module.exports = {
 
     watchers: {
         // facebook photo url
-        bitly: {
+        facebook: {
             pattern: /fbcdn[a-z-\.\/0-6]+\d+_\d+_(\d+).+?\.jpg/i,
             hollaback: hollabacks.photo
         }
